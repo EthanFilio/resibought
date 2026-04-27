@@ -43,7 +43,7 @@
 		</div>
 	</div>
 	<div class="items-right">
-		<p class="font-bold text-gray-900">${total.toFixed(2)}</p>
+		<p class="font-bold text-gray-900">₱{total.toFixed(2)}</p>
 		{#if warranty}
 			<div class="mt-1 flex items-center gap-1 text-xs text-forest-green-600">
 				<Shield class="h-3 w-3" />
