@@ -1,0 +1,12 @@
+data/SROIE2019
+data/OCR_20
+data/Zenodo
+data/CORD_1000
+
+.venv
+.vscode
+__pycache__
+
+ocr-sroie/layoutlmv3-sroie2019
+ocr-sroie/sroie2019_hf_dataset
+ocr-sroie/sroie2019_hf_test_dataset
