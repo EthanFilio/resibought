@@ -8,5 +8,7 @@ data/CORD_1000
 __pycache__
 
 ocr-sroie/layoutlmv3-sroie2019
+ocr-sroie/layoutlmv3-sroie2019-faster
+
 ocr-sroie/sroie2019_hf_dataset
 ocr-sroie/sroie2019_hf_test_dataset

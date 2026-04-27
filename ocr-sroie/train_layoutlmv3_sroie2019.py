@@ -6,7 +6,6 @@ from transformers import (
     Trainer,
     default_data_collator,
 )
-import torch
 
 def main():
     # Load train and test datasets
@@ -29,10 +28,10 @@ def main():
 
     # Training arguments
     training_args = TrainingArguments(
-        output_dir='layoutlmv3-sroie2019',
+        output_dir='layoutlmv3-sroie2019-faster',
         per_device_train_batch_size=2,
         per_device_eval_batch_size=2,
-        num_train_epochs=10,
+        num_train_epochs=3,
         eval_strategy='steps',
         eval_steps=50,
         save_steps=100,
@@ -40,7 +39,9 @@ def main():
         learning_rate=5e-5,
         save_total_limit=2,
         report_to='none',
-        fp16=False
+        fp16=True,
+        dataloader_num_workers=2,
+        gradient_accumulation_steps=1,
     )
 
     trainer = Trainer(
@@ -53,7 +54,7 @@ def main():
     )
 
     trainer.train()
-    trainer.save_model('layoutlmv3-sroie2019-final')
+    trainer.save_model('layoutlmv3-sroie2019-final-faster')
     print('Training complete. Model saved.')
 
 if __name__ == '__main__':
