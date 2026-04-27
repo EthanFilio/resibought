@@ -26,7 +26,7 @@ def prepare_hf_dataset(samples, label_list):
         data['image_path'].append(s['image'])
     return Dataset.from_dict(data)
 
-def encode_batch(batch, processor, label_all_tokens=True):
+def encode_batch(batch, processor):
     images = [Image.open(path).convert('RGB') for path in batch['image_path']]
     # Normalize boxes to 0-1000 coordinate space required by LayoutLMv3
     norm_boxes_batch = []
@@ -42,6 +42,9 @@ def encode_batch(batch, processor, label_all_tokens=True):
             norm_boxes.append([nx0, ny0, nx1, ny1])
         norm_boxes_batch.append(norm_boxes)
 
+    # Let the processor align word-level labels to token-level labels
+    # and return plain Python lists (avoid returning tensors here so the
+    # dataset saved to disk contains serializable lists).
     encoding = processor(
         images,
         batch['words'],
@@ -50,9 +53,16 @@ def encode_batch(batch, processor, label_all_tokens=True):
         truncation=True,
         padding='max_length',
         max_length=512,
-        return_tensors='pt'
     )
-    return {k: v for k, v in encoding.items()}
+
+    # Ensure all fields are plain python lists (datasets will accept them)
+    out = {}
+    for k, v in encoding.items():
+        try:
+            out[k] = v.tolist() if hasattr(v, 'tolist') else v
+        except Exception:
+            out[k] = v
+    return out
 
 def main():
     # Prepare train dataset
