@@ -30,8 +30,18 @@ def parse_box_line(line):
 
 def get_label(text, entities):
     # Simple rule-based matching for SROIE2019 (company, date, address, total)
+    # Match box text as substring of the entity value (not the other way round).
+    # Normalize by removing spaces and punctuation and comparing lowercase forms.
+    import re
+    def norm(s: str) -> str:
+        return re.sub(r"[^0-9a-z]+", "", (s or '').lower())
+
+    tnorm = norm(text)
     for key, value in entities.items():
-        if value and value.replace(' ', '').lower() in text.replace(' ', '').lower():
+        if not value:
+            continue
+        vnorm = norm(value)
+        if tnorm and tnorm in vnorm:
             return key.upper()
     return 'O'
 
@@ -60,7 +70,9 @@ def load_sample(file_id):
                 return f.readlines()
 
     entities = read_json_with_fallback(ent_path)
-    for line in read_lines_with_fallback(box_path):
+    # read boxes/words first
+    lines = read_lines_with_fallback(box_path)
+    for line in lines:
         if not line.strip():
             continue
         text, box = parse_box_line(line)
@@ -68,7 +80,44 @@ def load_sample(file_id):
             continue
         words.append(text)
         boxes.append(box)
-        labels.append(get_label(text, entities))
+
+    # prepare normalized entity values
+    import re
+    def norm(s: str) -> str:
+        return re.sub(r"[^0-9a-z]+", "", (s or '').lower())
+
+    en_norm = {k: norm(v) for k, v in entities.items() if v}
+    # date regex
+    date_re = re.compile(r"\b\d{1,2}[/-]\d{1,2}[/-]\d{2,4}\b")
+
+    # label spans up to max_span words
+    max_span = 4
+    N = len(words)
+    labels = ['O'] * N
+    i = 0
+    while i < N:
+        matched = False
+        for span in range(max_span, 0, -1):
+            if i + span > N:
+                continue
+            span_text = ' '.join(words[i:i+span])
+            tnorm = norm(span_text)
+            if tnorm:
+                for key, vnorm in en_norm.items():
+                    if tnorm in vnorm:
+                        lab = key.upper()
+                        for j in range(i, i+span):
+                            labels[j] = lab
+                        matched = True
+                        break
+            if matched:
+                break
+        if not matched:
+            if date_re.search(words[i]):
+                labels[i] = 'DATE'
+            i += 1
+        else:
+            i += span
     return {
         'id': file_id,
         'words': words,
