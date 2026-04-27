@@ -78,8 +78,8 @@ if __name__ == '__main__':
     model = None
     # make paths relative to this script (ocr-sroie folder)
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-    final_dir = os.path.join(BASE_DIR, 'layoutlmv3-sroie2019-final')
-    ckpt_root = os.path.join(BASE_DIR, 'layoutlmv3-sroie2019')
+    final_dir = os.path.join(BASE_DIR, 'layoutlmv3-sroie2019-final-faster')
+    ckpt_root = os.path.join(BASE_DIR, 'layoutlmv3-sroie2019-faster')
     try:
         processor = LayoutLMv3Processor.from_pretrained(final_dir, local_files_only=True)
     except Exception:
@@ -104,7 +104,7 @@ if __name__ == '__main__':
             raise
     model.to(DEVICE).eval() # type: ignore
 
-    imgs = ['../data/SROIE2019/test/img/X00016469670.jpg'] 
+    imgs = ['../data/SROIE2019/train/img/X00016469612.jpg'] 
 
     # # collect test images from repo test/img (compact)
     # imgs = glob.glob(os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')), 'data', 'SROIE2019', 'test', 'img', '*.jpg'))
