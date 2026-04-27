@@ -1,0 +1,33 @@
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
+	import SummaryCard from './SummaryCard.svelte';
+	import { DollarSign, Calendar } from '@lucide/svelte';
+
+	const { Story } = defineMeta({
+		title: 'Dashboard/SummaryCard',
+		component: SummaryCard,
+		tags: ['autodocs']
+	});
+</script>
+
+<Story
+	name="Total Spending"
+	args={{
+		title: 'Total Spending',
+		value: '$2228.93',
+		subtitle: 'All time',
+		Icon: DollarSign,
+		iconColor: 'forest-green'
+	}}
+/>
+
+<Story
+	name="This Month"
+	args={{
+		title: 'This Month',
+		value: '$1778.94',
+		subtitle: '4 receipts',
+		Icon: Calendar,
+		iconColor: 'blue'
+	}}
+/>

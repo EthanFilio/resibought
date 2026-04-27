@@ -10,7 +10,7 @@
 		title: 'Resibought',
 		Logo: Logo,
 		navItems: [
-			{ id: 1, href: '/' as Pathname, Icon: House, label: 'Dashboard' },
+			{ id: 1, href: '/dashboard' as Pathname, Icon: House, label: 'Dashboard' },
 			{ id: 2, href: '/upload' as Pathname, Icon: Upload, label: 'Upload' },
 			{ id: 3, href: '/warranties' as Pathname, Icon: Shield, label: 'Warranties' },
 			{ id: 4, href: '/analytics' as Pathname, Icon: ChartColumnIncreasing, label: 'Analytics' },
@@ -24,5 +24,7 @@
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 <div class="min-h-screen bg-gray-50">
 	<Header {...args} />
-	{@render children()}
+	<main class="mx-auto max-w-7xl px-4 py-6">
+		{@render children()}
+	</main>
 </div>

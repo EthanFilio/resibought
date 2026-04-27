@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '$lib/styles/layout.css';
 	import NavLink from './HeaderLink.svelte';
 	import type { Component } from 'svelte';
 	import type { Pathname } from '$app/types';
