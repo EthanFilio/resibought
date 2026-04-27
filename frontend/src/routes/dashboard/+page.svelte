@@ -9,14 +9,14 @@
 	const summaries = [
 		{
 			title: 'Total Spending',
-			value: '$2228.93',
+			value: '₱22280.93',
 			subtitle: 'All time',
 			Icon: DollarSign,
 			iconColor: 'forest-green'
 		},
 		{
 			title: 'This Month',
-			value: '$1778.94',
+			value: '₱17780.94',
 			subtitle: '4 receipts',
 			Icon: Calendar,
 			iconColor: 'blue'
@@ -24,7 +24,7 @@
 		{
 			title: 'Top Category',
 			value: 'Electronics',
-			subtitle: '$1749.98 spent',
+			subtitle: '₱17490.98 spent',
 			Icon: TrendingUp,
 			iconColor: 'purple'
 		}
@@ -33,45 +33,45 @@
 	const receipts = [
 		{
 			id: 1,
-			storeName: 'Best Electronics',
+			storeName: 'Abenson',
 			date: new SvelteDate('2026-04-20'),
-			total: 1299.99,
+			total: 12990.99,
 			imageUrl: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400',
 			itemCount: 1,
 			warranty: true
 		},
 		{
 			id: 2,
-			storeName: 'SuperMart',
+			storeName: 'Puregold',
 			date: new SvelteDate('2026-04-18'),
-			total: 87.42,
+			total: 870.42,
 			imageUrl: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400',
 			itemCount: 8,
 			warranty: false
 		},
 		{
 			id: 3,
-			storeName: 'Home Depot',
+			storeName: 'Ace Hardware',
 			date: new SvelteDate('2026-04-15'),
-			total: 234.56,
+			total: 2340.56,
 			imageUrl: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400',
 			itemCount: 6,
 			warranty: true
 		},
 		{
 			id: 4,
-			storeName: 'Fashion Outlet',
+			storeName: 'Uniqlo',
 			date: new SvelteDate('2026-04-10'),
-			total: 156.97,
+			total: 1560.97,
 			imageUrl: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400',
 			itemCount: 3,
 			warranty: false
 		},
 		{
 			id: 5,
-			storeName: 'Tech Store',
+			storeName: 'DataBlitz',
 			date: new SvelteDate('2026-03-28'),
-			total: 449.99,
+			total: 4490.99,
 			imageUrl: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400',
 			itemCount: 6,
 			warranty: true

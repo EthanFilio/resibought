@@ -14,7 +14,7 @@
 	name="Total Spending"
 	args={{
 		title: 'Total Spending',
-		value: '$2228.93',
+		value: '₱22280.93',
 		subtitle: 'All time',
 		Icon: DollarSign,
 		iconColor: 'forest-green'
@@ -25,7 +25,7 @@
 	name="This Month"
 	args={{
 		title: 'This Month',
-		value: '$1778.94',
+		value: '₱17780.94',
 		subtitle: '4 receipts',
 		Icon: Calendar,
 		iconColor: 'blue'
