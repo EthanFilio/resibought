@@ -18,3 +18,9 @@ ocr-sroie/sroie2019_hf_test_dataset
 .python-version
 
 layoutlmv3-cord-model/
+
+batch*
+check*
+test*
+show*
+analyze*
