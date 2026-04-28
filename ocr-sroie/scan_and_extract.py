@@ -69,7 +69,156 @@ def predict_image(image_path, model, processor, device='cpu'):
             cur['boxes'].append(bbox)
     if cur:
         entities.append(cur)
-    return {'image': image_path, 'entities': entities}
+
+    # Post-processing: merge nearby COMPANY fragments and sanitize entities
+    def box_center_y(b):
+        return (b[1] + b[3]) / 2
+
+    # merge COMPANY fragments that are close vertically
+    companies = [e for e in entities if e['label'] == 'COMPANY']
+    others = [e for e in entities if e['label'] != 'COMPANY']
+    merged_comp = []
+    if companies:
+        # sort by y-center
+        companies.sort(key=lambda e: min(box_center_y(b) for b in e['boxes']))
+        cur = companies[0].copy()
+        for e in companies[1:]:
+            ycur = min(box_center_y(b) for b in cur['boxes'])
+            ye = min(box_center_y(b) for b in e['boxes'])
+            if abs(ye - ycur) <= 40:  # threshold in pixels
+                # merge
+                cur['text'] = (cur['text'] + ' ' + e['text']).strip()
+                cur['boxes'].extend(e['boxes'])
+            else:
+                merged_comp.append(cur)
+                cur = e.copy()
+        merged_comp.append(cur)
+
+    # sanitize: remove tiny non-informative labels and clean DATE text
+    import re
+    date_re = re.compile(r"(\d{1,2}[/-]\d{1,2}[/-]\d{2,4})")
+    clean_entities = []
+    # add merged companies first
+    # helper to apply fuzzy fixes to company text
+    def fix_company_text(txt: str) -> str:
+        s = txt.strip()
+        # common OCR errors -> corrections
+        s = re.sub(r"8HD", "BHD", s, flags=re.IGNORECASE)
+        s = re.sub(r"\bBDH\b", "BHD", s, flags=re.IGNORECASE)
+        s = re.sub(r"SDN\s*BND", "SDN BHD", s, flags=re.IGNORECASE)
+        s = re.sub(r"\b0JC\b", "OJC", s, flags=re.IGNORECASE)
+        # remove stray punctuation
+        s = s.replace(')', '').replace('(', '').strip()
+        return s
+
+    for e in merged_comp:
+        txt = fix_company_text(e['text'])
+        # drop very short garbage
+        if len(re.sub(r"\W+", "", txt)) < 2:
+            continue
+        clean_entities.append({'label': 'COMPANY', 'text': txt, 'boxes': e['boxes']})
+
+    # process other entities
+    for e in others:
+        txt = e['text'].strip()
+        if e['label'] == 'DATE':
+            m = date_re.search(txt)
+            if m:
+                txt = m.group(1)
+            else:
+                # drop single-char/garbage dates
+                if len(re.sub(r"\D+", "", txt)) < 4:
+                    continue
+        if e['label'] == 'TOTAL':
+            # extract monetary amount like 123.45
+            m = re.search(r"(\d+[.,]\d{2})", txt)
+            if m:
+                txt = m.group(1).replace(',', '.')
+            else:
+                # fallback: strip non-digit/dot characters
+                txt = re.sub(r"[^0-9.]", "", txt)
+                if not txt:
+                    continue
+        # drop tiny garbage company/date fragments
+        if e['label'] in ('COMPANY', 'DATE') and len(re.sub(r"\W+", "", txt)) < 2:
+            continue
+        clean_entities.append({'label': e['label'], 'text': txt, 'boxes': e['boxes']})
+
+    # If company list is empty or looks like garbage, try header fallback:
+    if not any(e['label'] == 'COMPANY' for e in clean_entities):
+        try:
+            page_top_thr = h * 0.25
+            header_words = []
+            for idx, (wtext, bbox) in enumerate(zip(words, boxes)):
+                cy = box_center_y(bbox)
+                if cy <= page_top_thr:
+                    header_words.append((idx, wtext, bbox))
+            # join header words ordered by x-coordinate and look for company markers
+            if header_words:
+                header_words.sort(key=lambda t: t[2][0])
+                joined = ' '.join(t[1] for t in header_words)
+                if re.search(r"\b(SDN|BHD|MARKETING|BOOK|TRADING|INDUSTRIAL)\b", joined, flags=re.IGNORECASE):
+                    cand = fix_company_text(joined)
+                    header_boxes = [t[2] for t in header_words]
+                    clean_entities.insert(0, {'label': 'COMPANY', 'text': cand, 'boxes': header_boxes})
+        except Exception:
+            pass
+
+    # Merge nearby entities of same label and remove tiny garbage entries
+    def entity_y_range(e):
+        ys = [b[1] for b in e['boxes']] + [b[3] for b in e['boxes']]
+        return min(ys), max(ys)
+
+    def horiz_overlap(a, b):
+        # approximate overlap between two boxes lists using x ranges
+        ax = [min(bb[0] for bb in a), max(bb[2] for bb in a)]
+        bx = [min(bb[0] for bb in b), max(bb[2] for bb in b)]
+        return max(0, min(ax[1], bx[1]) - max(ax[0], bx[0]))
+
+    final_entities = []
+    for label in ('COMPANY', 'ADDRESS', 'DATE', 'TOTAL'):
+        ents = [e for e in clean_entities if e['label'] == label]
+        if not ents:
+            continue
+        # drop very small/address garbage (single digits, stray chars)
+        filtered = []
+        for e in ents:
+            txt_clean = re.sub(r"\W+", "", e['text'])
+            if label == 'ADDRESS' and len(txt_clean) < 2:
+                continue
+            filtered.append(e)
+        if not filtered:
+            continue
+        # sort by top y then left x
+        def ent_key(e):
+            top = min(b[1] for b in e['boxes'])
+            left = min(b[0] for b in e['boxes'])
+            return (top, left)
+        filtered.sort(key=ent_key)
+
+        # merge nearby entries: if vertical ranges overlap/near and horizontal overlap small, merge texts
+        merged = []
+        cur = filtered[0].copy()
+        for e in filtered[1:]:
+            cur_top, cur_bot = entity_y_range(cur)
+            e_top, e_bot = entity_y_range(e)
+            vdist = max(0, max(e_top - cur_bot, cur_top - e_bot))
+            h_ov = horiz_overlap(cur['boxes'], e['boxes'])
+            if vdist <= 20 or h_ov > 0:
+                # merge
+                cur['text'] = (cur['text'] + ' ' + e['text']).strip()
+                cur['boxes'].extend(e['boxes'])
+            else:
+                merged.append(cur)
+                cur = e.copy()
+        merged.append(cur)
+
+        # If after merging there are multiple entries, prefer the longest text
+        merged.sort(key=lambda x: len(re.sub(r"\W+", "", x['text'])), reverse=True)
+        best = merged[0]
+        final_entities.append(best)
+
+    return {'image': image_path, 'entities': final_entities}
 
 if __name__ == '__main__':
     DEVICE = 'cpu'
@@ -104,7 +253,11 @@ if __name__ == '__main__':
             raise
     model.to(DEVICE).eval() # type: ignore
 
-    imgs = ['../data/SROIE2019/train/img/X00016469612.jpg'] 
+    imgs = [
+            '../data/SROIE2019/train/img/X00016469612.jpg', 
+            '../data/SROIE2019/test/img/X00016469670.jpg', 
+            '../data/SROIE2019/test/img/X51005230605.jpg'
+        ] 
 
     # # collect test images from repo test/img (compact)
     # imgs = glob.glob(os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')), 'data', 'SROIE2019', 'test', 'img', '*.jpg'))
