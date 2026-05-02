@@ -5,7 +5,7 @@
 	import Searchbar from '$lib/components/Dashboard/Searchbar.svelte';
 	import SummaryCard from '$lib/components/Dashboard/SummaryCard.svelte';
 	import ReceiptList from '$lib/components/Dashboard/ReceiptList.svelte';
-	import { DollarSign, Calendar, TrendingUp } from '@lucide/svelte';
+	import { PhilippinePeso, Calendar, TrendingUp } from '@lucide/svelte';
 
 	const receipts = mockReceipts;
 
@@ -22,7 +22,7 @@
 			title: 'Total Spending',
 			value: `₱${totalSpending.toFixed(2)}`,
 			subtitle: 'All time',
-			Icon: DollarSign,
+			Icon: PhilippinePeso,
 			iconColor: 'forest-green'
 		},
 		{
