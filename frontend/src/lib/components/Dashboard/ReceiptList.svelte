@@ -2,26 +2,10 @@
 	import '$lib/styles/layout.css';
 	import { List } from '@lucide/svelte';
 	import ReceiptLink from './ReceiptLink.svelte';
-	import type { SvelteDate } from 'svelte/reactivity';
-
-	interface Receipt {
-		/** Interal id of the receipt */
-		id: number;
-		/** Image of the receipt */
-		imageUrl: string;
-		/** Name of the store that issued the receipt */
-		storeName: string;
-		/** Date the receipt was issued */
-		date: SvelteDate;
-		/** Total cost */
-		total: number;
-		/** Number of items in the reciept */
-		itemCount: number;
-		/** If the it has warranty */
-		warranty: boolean;
-	}
+	import type { Receipt } from '$lib/types/common';
 
 	interface Props {
+		/** List of receipts */
 		receipts: Receipt[];
 	}
 	let { receipts }: Props = $props();
@@ -43,7 +27,7 @@
 			</div>
 		{:else}
 			{#each receipts as receipt (receipt.id)}
-				<ReceiptLink {...receipt} />
+				<ReceiptLink {receipt} />
 			{/each}
 		{/if}
 	</div>
