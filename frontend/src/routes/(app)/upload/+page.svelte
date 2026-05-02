@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '$lib/styles/layout.css';
-	import SectionHeader from '$lib/components/Upload/SectionHeader.svelte';
+	import { SectionHeader } from '$lib/components/Common';
 	import UploadBin from '$lib/components/Upload/UploadBin.svelte';
 
 	const binArgs = {
