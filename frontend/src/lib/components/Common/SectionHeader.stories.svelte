@@ -3,7 +3,7 @@
 	import SectionHeader from './SectionHeader.svelte';
 
 	const { Story } = defineMeta({
-		title: 'Upload/SectionHeader',
+		title: 'Common/SectionHeader',
 		component: SectionHeader,
 		tags: ['autodocs'],
 		args: {

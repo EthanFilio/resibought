@@ -1,7 +1,7 @@
 <script lang="ts">
 	import '$lib/styles/layout.css';
-	import SectionHeader from '$lib/components/Upload/SectionHeader.svelte';
-	import SummaryCard from '$lib/components/Dashboard/SummaryCard.svelte';
+	import SectionHeader from '$lib/components/Common/SectionHeader.svelte';
+	import SummaryCard from '$lib/components/Common/SummaryCard.svelte';
 	import { Shield, CircleAlert, Clock } from '@lucide/svelte';
 
 	const summaries = [

@@ -4,7 +4,7 @@
 	import { fn } from 'storybook/test';
 
 	const { Story } = defineMeta({
-		title: 'Dashboard/Searchbar',
+		title: 'Common/Searchbar',
 		component: Searchbar,
 		tags: ['autodocs'],
 		args: {
