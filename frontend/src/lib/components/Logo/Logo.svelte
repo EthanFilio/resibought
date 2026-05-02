@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '$lib/styles/layout.css';
 	import { Receipt } from '@lucide/svelte';
 
 	interface Props {
