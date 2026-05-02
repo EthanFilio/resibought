@@ -4,7 +4,7 @@
 	import { PhilippinePeso, Calendar } from '@lucide/svelte';
 
 	const { Story } = defineMeta({
-		title: 'Dashboard/SummaryCard',
+		title: 'Common/SummaryCard',
 		component: SummaryCard,
 		tags: ['autodocs']
 	});
