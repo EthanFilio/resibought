@@ -22,7 +22,7 @@
 		orange: 'text-orange-600',
 		red: 'text-red-600'
 	};
-	let { title, subtitle, Icon, iconColor, value }: Props = $props();
+	const { title, subtitle, Icon, iconColor, value }: Props = $props();
 	const style = $derived(colorMap[iconColor]);
 </script>
 

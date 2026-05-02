@@ -17,34 +17,34 @@
 	let files: FileList | null = $state(null);
 	let fileInput: HTMLInputElement;
 
-	function handleDragOver(event: DragEvent) {
+	const handleDragOver = (event: DragEvent) => {
 		event.preventDefault();
 		if (event.dataTransfer && event.dataTransfer.types.includes('Files')) {
 			isDraggingFile = true;
 		}
-	}
+	};
 
-	function handleDragLeave(event: DragEvent) {
+	const handleDragLeave = (event: DragEvent) => {
 		if (event.dataTransfer && event.dataTransfer.types.includes('Files')) {
 			isDraggingFile = false;
 		}
-	}
+	};
 
-	function handleDrop(event: DragEvent) {
+	const handleDrop = (event: DragEvent) => {
 		event.preventDefault();
 		isDraggingFile = false;
 		if (event.dataTransfer) {
 			const files = event.dataTransfer.files;
 			console.log('Dropped files:', files);
 		}
-	}
+	};
 
-	function handleFileSelect(event: Event) {
+	const handleFileSelect = (event: Event) => {
 		const target = event.target as HTMLInputElement;
 		if (target.files) {
 			console.log('Selected files:', target.files);
 		}
-	}
+	};
 </script>
 
 <div
