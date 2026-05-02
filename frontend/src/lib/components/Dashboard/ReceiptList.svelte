@@ -8,7 +8,7 @@
 		/** List of receipts */
 		receipts: Receipt[];
 	}
-	let { receipts }: Props = $props();
+	const { receipts }: Props = $props();
 </script>
 
 <div class="rounded-xl bg-white shadow-sm">

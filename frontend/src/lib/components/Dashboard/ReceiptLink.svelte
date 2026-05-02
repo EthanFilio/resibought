@@ -9,7 +9,7 @@
 		/** Receipt associated with the link */
 		receipt: Receipt;
 	}
-	let { receipt }: Props = $props();
+	const { receipt }: Props = $props();
 </script>
 
 <a
