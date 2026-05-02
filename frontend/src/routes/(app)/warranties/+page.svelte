@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '$lib/styles/layout.css';
-	import SectionHeader from '$lib/components/Common/SectionHeader.svelte';
+	import { SectionHeader } from '$lib/components/Common';
 	import SummaryCard from '$lib/components/Common/SummaryCard.svelte';
 	import { Shield, CircleAlert, Clock } from '@lucide/svelte';
 

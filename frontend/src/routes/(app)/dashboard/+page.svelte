@@ -2,9 +2,8 @@
 	import '$lib/styles/layout.css';
 	import { getCategorySpending } from '$lib/types/common';
 	import { mockReceipts } from '$lib/mockData';
-	import Searchbar from '$lib/components/Common/Searchbar.svelte';
-	import SummaryCard from '$lib/components/Common/SummaryCard.svelte';
-	import ReceiptList from '$lib/components/Dashboard/ReceiptList.svelte';
+	import { Searchbar, SummaryCard } from '$lib/components/Common';
+	import { ReceiptList } from '$lib/components/Dashboard';
 	import { PhilippinePeso, Calendar, TrendingUp } from '@lucide/svelte';
 
 	const receipts = mockReceipts;
