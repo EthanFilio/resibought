@@ -1,7 +1,7 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import SummaryCard from './SummaryCard.svelte';
-	import { DollarSign, Calendar } from '@lucide/svelte';
+	import { PhilippinePeso, Calendar } from '@lucide/svelte';
 
 	const { Story } = defineMeta({
 		title: 'Dashboard/SummaryCard',
@@ -16,7 +16,7 @@
 		title: 'Total Spending',
 		value: '₱22280.93',
 		subtitle: 'All time',
-		Icon: DollarSign,
+		Icon: PhilippinePeso,
 		iconColor: 'forest-green'
 	}}
 />

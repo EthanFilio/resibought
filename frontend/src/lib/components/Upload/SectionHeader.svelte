@@ -5,7 +5,7 @@
 		/** Title of the section */
 		title: string;
 		/** Subtitle of the section */
-		subtitle: string;
+		subtitle?: string;
 	}
 
 	const { title, subtitle }: Props = $props();
@@ -13,5 +13,7 @@
 
 <div>
 	<h1 class="text-3xl font-bold text-gray-900">{title}</h1>
-	<p class="mt-2 text-gray-600">{subtitle}</p>
+	{#if subtitle}
+		<p class="mt-2 text-gray-600">{subtitle}</p>
+	{/if}
 </div>
