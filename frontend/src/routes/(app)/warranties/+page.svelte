@@ -1,28 +1,49 @@
 <script lang="ts">
 	import '$lib/styles/layout.css';
-	import { SectionHeader } from '$lib/components/Common';
-	import SummaryCard from '$lib/components/Common/SummaryCard.svelte';
+	import { getWarrantyItems, getDaysUntilExpiry } from '$lib/types/common';
+	import { mockReceipts } from '$lib/mockData';
+	import { SectionHeader, Searchbar, SummaryCard } from '$lib/components/Common';
+	import WarrantyList from '$lib/components/Warranties/WarrantyList.svelte';
 	import { Shield, CircleAlert, Clock } from '@lucide/svelte';
+	const warrantyItems = getWarrantyItems(mockReceipts);
+
+	const soon = warrantyItems.filter((item) => {
+		const days = getDaysUntilExpiry(item.warranty!.expiresAt);
+		return days <= 7 && days > 0;
+	});
+
+	const active = warrantyItems.filter((item) => {
+		const days = getDaysUntilExpiry(item.warranty!.expiresAt);
+		return days > 7;
+	});
+
+	const expired = warrantyItems.filter((item) => {
+		const days = getDaysUntilExpiry(item.warranty!.expiresAt);
+		return days <= 0;
+	});
 
 	const summaries = [
 		{
 			title: 'Total Warranties',
-			value: '10',
+			value: `${active.length + soon.length}`,
 			subtitle: 'Active Items',
 			Icon: Shield,
 			iconColor: 'forest-green'
 		},
 		{
 			title: 'Expiring Soon',
-			value: '3',
+			value: `${soon.length}`,
 			subtitle: 'Within 7 days',
 			Icon: CircleAlert,
 			iconColor: 'yellow'
 		},
 		{
 			title: 'Recently Expired',
-			value: 'Acer Laptop',
-			subtitle: '5 days ago',
+			value: expired.length > 0 ? expired[0].name : 'None',
+			subtitle:
+				expired.length > 0
+					? `${-1 * getDaysUntilExpiry(expired[0].warranty!.expiresAt)} days ago`
+					: 'No expired warranties',
 			Icon: Clock,
 			iconColor: 'red'
 		}
@@ -39,4 +60,14 @@
 			<SummaryCard {...summary} />
 		{/each}
 	</div>
+	<Searchbar placeholder="Search stores or items..." />
+	{#if soon.length > 0}
+		<WarrantyList status="expiring-soon" warranties={soon} />
+	{/if}
+	{#if active.length > 0}
+		<WarrantyList status="active" warranties={active} />
+	{/if}
+	{#if expired.length > 0}
+		<WarrantyList status="expired" warranties={expired} />
+	{/if}
 </div>

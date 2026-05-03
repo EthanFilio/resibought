@@ -68,3 +68,8 @@ export function getWarrantyItems(receipts: Receipt[]) {
 	});
 	return items.sort((a, b) => a.warranty!.expiresAt.getTime() - b.warranty!.expiresAt.getTime());
 }
+
+export function getDaysUntilExpiry(expiresAt: Date) {
+	const now = new Date();
+	return Math.ceil((expiresAt.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+}
