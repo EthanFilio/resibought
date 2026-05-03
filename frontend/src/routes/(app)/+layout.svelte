@@ -1,7 +1,7 @@
 <script lang="ts">
 	import '$lib/styles/layout.css';
 	import favicon from '$lib/assets/favicon.svg';
-	import Header from '$lib/components/Header/Header.svelte';
+	import { Header, MobileNavBar } from '$lib/components/Header';
 	import Logo from '$lib/components/Logo/Logo.svelte';
 	import { House, Upload, Shield, ChartColumnIncreasing, User } from '@lucide/svelte';
 	import type { Pathname } from '$app/types';
@@ -27,4 +27,5 @@
 	<main class="mx-auto max-w-7xl px-4 py-6">
 		{@render children()}
 	</main>
+	<MobileNavBar {...args} />
 </div>
