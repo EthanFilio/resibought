@@ -1,4 +1,4 @@
-<script module>
+<script module lang="ts">
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import UploadBin from './UploadBin.svelte';
 
@@ -14,4 +14,4 @@
 	});
 </script>
 
-<Story name="Section Header" />
+<Story name="Upload Bin" />
