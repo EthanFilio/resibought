@@ -1,4 +1,4 @@
-<script module>
+<script module lang="ts">
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Search } from '@lucide/svelte';
 	import Link from './HeaderLink.svelte';

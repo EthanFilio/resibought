@@ -1,4 +1,4 @@
-<script module>
+<script module lang="ts">
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import SummaryCard from './SummaryCard.svelte';
 	import { PhilippinePeso, Calendar } from '@lucide/svelte';
