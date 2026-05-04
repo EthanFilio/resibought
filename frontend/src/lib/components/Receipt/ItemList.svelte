@@ -31,7 +31,7 @@
 	<div class="border-t border-gray-200 bg-gray-50 p-4">
 		<div class="flex items-center justify-between">
 			<span class="font-semibold text-gray-900">Total</span>
-			<span class="text-2xl font-bold text-gray-900">${computeTotal().toFixed(2)}</span>
+			<span class="text-2xl font-bold text-gray-900">₱{computeTotal().toFixed(2)}</span>
 		</div>
 	</div>
 </div>
