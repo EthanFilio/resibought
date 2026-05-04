@@ -5,12 +5,11 @@
 	interface Props {
 		/** Placeholder value */
 		placeholder: string;
-		/** On change event handler */
-		onChange?: () => void;
+		/** Value to bind to */
+		value: string;
 	}
 
-	let value = $state('');
-	const { ...props }: Props = $props();
+	let { value = $bindable(), ...props }: Props = $props();
 </script>
 
 <div class="rounded-xl bg-white p-4 shadow-sm">
