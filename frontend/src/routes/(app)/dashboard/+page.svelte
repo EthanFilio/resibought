@@ -6,7 +6,16 @@
 	import { ReceiptList } from '$lib/components/Dashboard';
 	import { PhilippinePeso, Calendar, TrendingUp } from '@lucide/svelte';
 
+	let searchValue = $state('');
 	const receipts = mockReceipts;
+	let filteredReceipts = $derived(
+		receipts.filter(
+			(receipt) =>
+				searchValue === '' ||
+				receipt.storeName.toLowerCase().includes(searchValue.toLowerCase()) ||
+				receipt.items.some((item) => item.name.toLowerCase().includes(searchValue.toLowerCase()))
+		)
+	);
 
 	const totalSpending = receipts.reduce((sum, receipt) => sum + receipt.total, 0);
 	const thisMonthReceipts = receipts.filter(
@@ -47,6 +56,6 @@
 			<SummaryCard {...summary} />
 		{/each}
 	</div>
-	<Searchbar placeholder="Search receipts, stores, or items..." />
-	<ReceiptList {receipts} />
+	<Searchbar placeholder="Search receipts, stores, or items..." bind:value={searchValue} />
+	<ReceiptList receipts={filteredReceipts} />
 </div>
