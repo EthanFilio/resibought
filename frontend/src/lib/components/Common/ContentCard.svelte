@@ -12,7 +12,7 @@
 	const { title, children }: Props = $props();
 </script>
 
-<div class="rounded-xl bg-white p-6 shadow-sm">
+<div class="flex-col rounded-xl bg-white p-6 shadow-sm">
 	<h2 class="mb-4 font-semibold text-gray-900">{title}</h2>
 	{@render children()}
 </div>
