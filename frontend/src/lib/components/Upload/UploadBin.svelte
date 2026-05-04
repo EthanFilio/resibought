@@ -9,12 +9,15 @@
 		maxSize: number;
 		/** Title of bin*/
 		title: string;
+		/** Files to be binded */
+		files: FileList | null;
+		/** */
+		processImage: (file: File) => void;
 	}
 
-	const { formats, maxSize, title }: Props = $props();
+	let { formats, maxSize, title, files = $bindable(), processImage }: Props = $props();
 
 	let isDraggingFile = $state(false);
-	let files: FileList | null = $state(null);
 	let fileInput: HTMLInputElement;
 
 	const handleDragOver = (event: DragEvent) => {
@@ -36,6 +39,7 @@
 		if (event.dataTransfer) {
 			const files = event.dataTransfer.files;
 			console.log('Dropped files:', files);
+			processImage(files.item(0)!);
 		}
 	};
 
@@ -43,6 +47,7 @@
 		const target = event.target as HTMLInputElement;
 		if (target.files) {
 			console.log('Selected files:', target.files);
+			processImage(target.files.item(0)!);
 		}
 	};
 </script>

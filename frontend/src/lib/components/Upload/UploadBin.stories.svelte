@@ -1,6 +1,7 @@
 <script module lang="ts">
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import UploadBin from './UploadBin.svelte';
+	import { fn } from 'storybook/test';
 
 	const { Story } = defineMeta({
 		title: 'Upload/UploadBin',
@@ -9,7 +10,9 @@
 		args: {
 			formats: ['jpg', 'png', 'heic'],
 			maxSize: 10,
-			title: 'Upload Receipt Image'
+			title: 'Upload Receipt Image',
+			files: null,
+			processImage: fn()
 		}
 	});
 </script>
