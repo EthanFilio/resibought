@@ -74,7 +74,7 @@
 			{/if}
 		</div>
 		<div class="text-right">
-			<p class="font-bold text-gray-900">${item.price.toFixed(2)}</p>
+			<p class="font-bold text-gray-900">₱{item.price.toFixed(2)}</p>
 		</div>
 	</div>
 </div>

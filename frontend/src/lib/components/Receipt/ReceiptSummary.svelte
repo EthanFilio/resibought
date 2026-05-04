@@ -27,7 +27,7 @@
 			<PhilippinePeso class="h-5 w-5 text-forest-green-600" />
 			<div>
 				<p class="text-sm text-gray-600">Total</p>
-				<p class="font-semibold text-gray-900">${total.toFixed(2)}</p>
+				<p class="font-semibold text-gray-900">₱{total.toFixed(2)}</p>
 			</div>
 		</div>
 		<div class="flex items-center gap-3">
