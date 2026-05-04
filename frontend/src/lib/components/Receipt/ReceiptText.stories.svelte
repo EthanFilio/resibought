@@ -13,4 +13,6 @@
 	});
 </script>
 
-<Story name="Image" args={{ ...mockReceipts[0] }} />
+<Story name="Unrated" args={{ ...mockReceipts[0] }} />
+
+<Story name="Rated" args={{ ...mockReceipts[0], rated: true }} />
