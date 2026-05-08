@@ -4,7 +4,7 @@ export const mockReceipts: Receipt[] = [
 	{
 		id: '1',
 		storeName: 'Abenson',
-		date: new Date('2026-04-20'),
+		date: new Date('2026-05-20'),
 		total: 12990.99,
 		imageUrl: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400',
 		extractedText: 'Abenson\n123 Tech Street\nLaptop - $1299.99\n1 Year Warranty\nTotal: $1299.99',
