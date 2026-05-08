@@ -48,7 +48,7 @@ export function getMonthlySpending(receipts: Receipt[]) {
 		const monthKey = receipt.date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 		monthly[monthKey] = (monthly[monthKey] || 0) + receipt.total;
 	});
-	return Object.entries(monthly).map(([name, total]) => ({ name, total }));
+	return Object.entries(monthly).map(([month, value]) => ({ month, value }));
 }
 
 export function getWarrantyItems(receipts: Receipt[]) {
