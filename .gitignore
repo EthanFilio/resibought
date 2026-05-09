@@ -15,6 +15,12 @@ ocr-sroie/layoutlmv3-sroie2019-final-faster
 ocr-sroie/sroie2019_hf_dataset
 ocr-sroie/sroie2019_hf_test_dataset
 
+ocr-cord/cord1000_hf_test_dataset
+ocr-cord/cord1000_hf_train_dataset
+ocr-cord/cord1000_hf_val_dataset
+
+ocr-cord/layoutlmv3-cord1000-final
+
 .python-version
 
 layoutlmv3-cord-model/
