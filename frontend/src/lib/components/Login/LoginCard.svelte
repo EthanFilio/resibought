@@ -1,6 +1,20 @@
 <script lang="ts">
 	import '$lib/styles/layout.css';
 	import Logo from '../Logo/Logo.svelte';
+	import { enhance } from '$app/forms';
+	import type { ActionData, SubmitFunction } from './$types.js';
+	interface Props {
+		form: ActionData;
+	}
+	let { form }: Props = $props();
+	let loading = $state(false);
+	const handleSubmit: SubmitFunction = () => {
+		loading = true;
+		return async ({ update }) => {
+			update();
+			loading = false;
+		};
+	};
 
 	let isSignup = $state(false);
 </script>
