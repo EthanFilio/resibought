@@ -1,0 +1,14 @@
+# CORD OCR + LayoutLMv3 dependencies (Windows CPU-friendly Paddle stack)
+
+# Pin these to avoid Paddle runtime incompatibilities on Windows CPU
+numpy==1.26.4
+paddlepaddle==2.6.2
+paddleocr==2.7.3
+
+# Core model/inference/training deps
+torch
+transformers
+datasets
+pillow
+accelerate
+safetensors
