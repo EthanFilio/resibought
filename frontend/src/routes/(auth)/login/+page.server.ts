@@ -24,21 +24,41 @@ const logReg = async (event: RequestEvent, isReg: boolean) => {
 	const validEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
 	if (!validEmail) {
 		return fail(400, {
-			errors: { email: 'Please enter a valid email address', password: null },
+			errors: {
+				email: 'Please enter a valid email address',
+				password: null,
+				passwordConfirm: null
+			},
 			email,
-			password
+			password,
+			passwordConfirm: ''
 		});
 	}
 
 	if (password.length < 8) {
 		return fail(400, {
-			errors: { email: null, password: 'Please enter a password with at least 8 characters' },
+			errors: {
+				email: null,
+				password: 'Please enter a password with at least 8 characters',
+				passwordConfirm: null
+			},
 			email,
-			password
+			password,
+			passwordConfirm: ''
 		});
 	}
 
 	if (isReg) {
+		const passwordConfirm = formData.get('passwordConfirm') as string;
+		if (passwordConfirm !== password) {
+			return fail(400, {
+				errors: { email: null, password: null, passwordConfirm: 'Please enter the same password' },
+				email,
+				password,
+				passwordConfirm
+			});
+		}
+
 		const { error } = await supabase.auth.signUp({ email, password });
 
 		if (error) {
@@ -46,6 +66,7 @@ const logReg = async (event: RequestEvent, isReg: boolean) => {
 				success: false,
 				email,
 				password,
+				passwordConfirm,
 				message: `Registration Failed`
 			});
 		}
@@ -57,7 +78,8 @@ const logReg = async (event: RequestEvent, isReg: boolean) => {
 				success: false,
 				email,
 				password,
-				message: `Account not found`
+				passwordConfirm: '',
+				message: `Account not found. Email or password incorrect`
 			});
 		}
 	}

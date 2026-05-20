@@ -65,6 +65,25 @@
 				</div>
 			{/if}
 		</div>
+
+		{#if isSignup}
+			<div>
+				<input
+					type="password"
+					id="passwordConfirm"
+					name="passwordConfirm"
+					class="w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:border-transparent focus:ring-2 focus:ring-forest-green-500"
+					placeholder="Confirm Password"
+					value={form?.passwordConfirm ?? ''}
+					required
+				/>
+				{#if form?.errors?.passwordConfirm}
+					<div class="mt-0 items-center pl-5 text-sm text-red-400">
+						{form?.errors?.passwordConfirm}
+					</div>
+				{/if}
+			</div>
+		{/if}
 		{#if form?.message !== undefined}
 			<div class="text-center text-red-400">{form?.message}</div>
 		{/if}
@@ -72,6 +91,7 @@
 		<button
 			type="submit"
 			class="w-full rounded-lg bg-forest-green-600 px-4 py-2 font-medium text-white transition-colors hover:bg-forest-green-700"
+			disabled={loading}
 		>
 			{loading ? 'Loading...' : isSignup ? 'Sign Up' : 'Log In'}
 		</button>
