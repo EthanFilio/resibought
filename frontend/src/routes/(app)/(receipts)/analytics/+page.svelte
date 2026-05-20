@@ -1,11 +1,13 @@
 <script lang="ts">
 	import '$lib/styles/layout.css';
 	import { getCategorySpending, getMonthlySpending } from '$lib/types/common';
-	import { mockReceipts } from '$lib/mockData';
 	import { SummaryCard, SectionHeader } from '$lib/components/Common';
 	import { PhilippinePeso, ShoppingBag, Store, TrendingUp } from '@lucide/svelte';
 	import { BarChart, PieChart, LineChart, Ranking } from '$lib/components/Analytics';
-	const receipts = mockReceipts;
+
+	const { data } = $props();
+	// svelte-ignore state_referenced_locally
+	const { receipts } = data;
 
 	const totalSpending = receipts.reduce((sum, receipt) => sum + receipt.total, 0);
 	const averageReceiptValue = totalSpending / receipts.length;

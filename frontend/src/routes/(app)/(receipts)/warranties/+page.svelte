@@ -1,14 +1,16 @@
 <script lang="ts">
 	import '$lib/styles/layout.css';
 	import { getWarrantyItems, getDaysUntilExpiry, type ReceiptItem } from '$lib/types/common';
-	import { mockReceipts } from '$lib/mockData';
 	import { SectionHeader, Searchbar, SummaryCard } from '$lib/components/Common';
 	import WarrantyList from '$lib/components/Warranties/WarrantyList.svelte';
 	import { Shield, CircleAlert, Clock } from '@lucide/svelte';
 
 	let searchValue = $state('');
 
-	const warrantyItems = getWarrantyItems(mockReceipts);
+	const { data } = $props();
+	// svelte-ignore state_referenced_locally
+	const { receipts } = data;
+	const warrantyItems = getWarrantyItems(receipts);
 
 	const soon = warrantyItems.filter((item) => {
 		const days = getDaysUntilExpiry(item.warranty!.expiresAt);

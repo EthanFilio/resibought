@@ -1,13 +1,11 @@
 <script lang="ts">
 	import '$lib/styles/layout.css';
-	import { mockReceipts } from '$lib/mockData';
 	import { BackButton, SectionHeader } from '$lib/components/Common';
 	import { ReceiptSummary, ReceiptImage, ReceiptText, ItemList } from '$lib/components/Receipt';
-	import { page } from '$app/state';
 
-	const receipt = mockReceipts.find((r) => r.id === page.params.id);
-	console.log(page.params.id);
-	console.log(receipt);
+	const { data } = $props();
+	// svelte-ignore state_referenced_locally
+	const { receipt } = data;
 </script>
 
 <div class="mx-auto max-w-4xl space-y-6 pb-20 md:pb-6">

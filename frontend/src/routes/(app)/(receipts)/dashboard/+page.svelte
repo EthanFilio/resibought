@@ -1,13 +1,15 @@
 <script lang="ts">
 	import '$lib/styles/layout.css';
 	import { getCategorySpending } from '$lib/types/common';
-	import { mockReceipts } from '$lib/mockData';
 	import { Searchbar, SummaryCard } from '$lib/components/Common';
 	import { ReceiptList } from '$lib/components/Dashboard';
 	import { PhilippinePeso, Calendar, TrendingUp } from '@lucide/svelte';
 
+	const { data } = $props();
+	// svelte-ignore state_referenced_locally
+	const { receipts } = data;
+
 	let searchValue = $state('');
-	const receipts = mockReceipts;
 	let filteredReceipts = $derived(
 		receipts.filter(
 			(receipt) =>

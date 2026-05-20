@@ -1,13 +1,8 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ locals: { supabase } }) => {
-	const { data: claimsData, error } = await supabase.auth.getClaims();
-
-	if (error || !claimsData?.claims) {
-		redirect(303, '/');
-	}
-
+export const load: PageServerLoad = async ({ locals: { supabase }, parent }) => {
+	const { claimsData } = await parent();
 	const { claims } = claimsData;
 
 	const { data: profile } = await supabase

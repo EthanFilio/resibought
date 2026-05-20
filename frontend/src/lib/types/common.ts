@@ -32,6 +32,55 @@ export const categories = [
 	'Other'
 ];
 
+export interface ReceiptData {
+	id: unknown;
+	storeName: unknown;
+	date: unknown;
+	total: unknown;
+	imageUrl: unknown;
+	extractedText: unknown;
+	items: {
+		id: unknown;
+		name: unknown;
+		price: unknown;
+		category: unknown;
+		warranty: {
+			duration: unknown;
+			expiresAt: unknown;
+		};
+	}[];
+}
+
+export function JSONtoReceipt(receiptData: ReceiptData): Receipt {
+	return {
+		id: receiptData.id as string,
+		storeName: receiptData.storeName as string,
+		date: new Date(receiptData.date as string),
+		total: receiptData.total as number,
+		imageUrl: receiptData.imageUrl as string,
+		extractedText: receiptData.extractedText as string,
+		items: receiptData.items.map((i) => ({
+			id: i.id as string,
+			name: i.name as string,
+			price: i.price as number,
+			category: i.category as string,
+			warranty: i.warranty
+				? {
+						duration: i.warranty.duration as string,
+						expiresAt: new Date(i.warranty.expiresAt as string)
+					}
+				: null
+		}))
+	} as Receipt;
+}
+
+export function JSONtoReceipts(receiptsData: ReceiptData[] | null): Receipt[] {
+	if (!receiptsData) {
+		return [];
+	}
+	return receiptsData.map((r) => JSONtoReceipt(r));
+}
+
 export function getCategorySpending(receipts: Receipt[]) {
 	const spending: Record<string, number> = {};
 	receipts.forEach((receipt) => {
